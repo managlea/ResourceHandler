@@ -1,0 +1,23 @@
+{
+  "name": "managlea/resource-handler",
+  "description": "",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kauri Kont-Kontson"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/managlea/EntityManager.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"Managlea\\Component\\": "src/"}
+  },
+  "require": {
+    "managlea/entity-manager": "*"
+  }
+}
