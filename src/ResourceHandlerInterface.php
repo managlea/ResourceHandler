@@ -6,9 +6,11 @@ namespace Managlea\Component;
 interface ResourceHandlerInterface
 {
     /**
-     * @param int $resourceId
+     * @param string $name resource name
+     * @param int $id resource id
+     * @return mixed
      */
-    public function getSingle($resourceId);
+    public static function getSingle($name, $id);
 
     /**
      * @param array $filters
