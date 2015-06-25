@@ -6,14 +6,12 @@ namespace Managlea\Component;
 class ResourceHandler implements ResourceHandlerInterface
 {
     /**
-     * @param $resourceName
+     * @param string $resourceName
      * @return EntityManagerInterface
      */
     private static function getEntityManagerForResource($resourceName)
     {
-
-
-        return 'foo';
+        return $resourceName;;
     }
 
     /**
