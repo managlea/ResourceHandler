@@ -13,6 +13,6 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function getSingle()
     {
-        $result = ResourceHandler::getSingle('product', 1);
+        ResourceHandler::getSingle('product', 1);
     }
 }
