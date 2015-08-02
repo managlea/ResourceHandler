@@ -11,7 +11,7 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     private static function getEntityManagerForResource($resourceName)
     {
-        return $resourceName;;
+        return EntityManagerFactory::createForResource($resourceName);
     }
 
     /**
@@ -34,34 +34,44 @@ class ResourceHandler implements ResourceHandlerInterface
     }
 
     /**
+     * @param string $resourceName
      * @param array $filters
+     * @param int $limit
+     * @param int $offset
+     * @return mixed
      */
-    public function getCollection(array $filters = array())
+    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
     {
         // TODO: Implement getCollection() method.
     }
 
     /**
+     * @param string $resourceName
      * @param array $data
+     * @return mixed
      */
-    public function postSingle(array $data)
+    public function postSingle($resourceName, array $data)
     {
         // TODO: Implement postSingle() method.
     }
 
     /**
-     * @param int $resourceId
+     * @param string $resourceName
+     * @param int $id
      * @param array $data
+     * @return mixed
      */
-    public function putSingle($resourceId, array $data)
+    public function putSingle($resourceName, $id, array $data)
     {
         // TODO: Implement putSingle() method.
     }
 
     /**
-     * @param int $resourceId
+     * @param string $resourceName
+     * @param int $id
+     * @return mixed
      */
-    public function deleteSingle($resourceId)
+    public function deleteSingle($resourceName, $id)
     {
         // TODO: Implement deleteSingle() method.
     }

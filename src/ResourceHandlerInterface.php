@@ -2,34 +2,47 @@
 
 namespace Managlea\Component;
 
-
+/**
+ * Interface ResourceHandlerInterface
+ * @package Managlea\Component
+ */
 interface ResourceHandlerInterface
 {
     /**
-     * @param string $name resource name
+     * @param string $resourceName resource name
      * @param int $id resource id
      * @return mixed
      */
-    public static function getSingle($name, $id);
+    public static function getSingle($resourceName, $id);
 
     /**
+     * @param string $resourceName
      * @param array $filters
+     * @param int $limit
+     * @param int $offset
+     * @return mixed
      */
-    public function getCollection(array $filters = array());
+    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
 
     /**
+     * @param string $resourceName
      * @param array $data
+     * @return mixed
      */
-    public function postSingle(array $data);
+    public function postSingle($resourceName, array $data);
 
     /**
-     * @param int $resourceId
+     * @param string $resourceName
+     * @param int $id
      * @param array $data
+     * @return mixed
      */
-    public function putSingle($resourceId, array $data);
+    public function putSingle($resourceName, $id, array $data);
 
     /**
-     * @param int $resourceId
+     * @param string $resourceName
+     * @param int $id
+     * @return mixed
      */
-    public function deleteSingle($resourceId);
+    public function deleteSingle($resourceName, $id);
 }
