@@ -22,14 +22,14 @@ interface ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
+    public static function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
 
     /**
      * @param string $resourceName
      * @param array $data
      * @return mixed
      */
-    public function postSingle($resourceName, array $data);
+    public static function postSingle($resourceName, array $data);
 
     /**
      * @param string $resourceName
@@ -37,12 +37,12 @@ interface ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function putSingle($resourceName, $id, array $data);
+    public static function putSingle($resourceName, $id, array $data);
 
     /**
      * @param string $resourceName
      * @param int $id
      * @return mixed
      */
-    public function deleteSingle($resourceName, $id);
+    public static function deleteSingle($resourceName, $id);
 }

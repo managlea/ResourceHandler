@@ -6,13 +6,29 @@ namespace Managlea\Component;
 class ResourceHandler implements ResourceHandlerInterface
 {
     /**
-     * @param string $resourceName
+     * @var EntityManagerInterface
+     */
+    private static $entityManager;
+    /**
+     * @var string
+     */
+    private static $objectName;
+
+    /**
+     * @param $resourceName
      * @return EntityManagerInterface
+     * @throws \Exception
      */
     private static function getEntityManagerForResource($resourceName)
     {
         $entityManagerName = ResourceMapper::getEntityManager($resourceName);
-        return EntityManagerFactory::create($entityManagerName);
+        $entityManager = EntityManagerFactory::create($entityManagerName);
+
+        if (!$entityManager instanceof EntityManagerInterface) {
+            throw new \Exception('Entity manager not instance of EntityManagerInterface');
+        }
+
+        return $entityManager;
     }
 
     /**
@@ -26,21 +42,25 @@ class ResourceHandler implements ResourceHandlerInterface
 
     /**
      * @param string $resourceName
+     * @throws \Exception
+     */
+    private static function initialize($resourceName)
+    {
+        self::$entityManager = self::getEntityManagerForResource($resourceName);
+        self::$objectName = self::getObjectNameForResource($resourceName);
+    }
+
+    /**
+     * @param string $resourceName
      * @param int $id
      * @return mixed
      * @throws \Exception
      */
     public static function getSingle($resourceName, $id)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
+        self::initialize($resourceName);
 
-        if (!$entityManager instanceof EntityManagerInterface) {
-            throw new \Exception('Entity manager not instance of EntityManagerInterface');
-        }
-
-        $objectName = self::getObjectNameForResource($resourceName);
-
-        $resource = $entityManager->get($objectName, $id);
+        $resource = self::$entityManager->get(self::$objectName, $id);
 
         return $resource;
     }
@@ -52,9 +72,14 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
+    public static function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
     {
-        // TODO: Implement getCollection() method.
+        $entityManager = self::getEntityManagerForResource($resourceName);
+        $objectName = self::getObjectNameForResource($resourceName);
+
+        $collection = $entityManager->getCollection($objectName, $filters, $limit, $offset);
+
+        return $collection;
     }
 
     /**
@@ -62,9 +87,14 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function postSingle($resourceName, array $data)
+    public static function postSingle($resourceName, array $data)
     {
-        // TODO: Implement postSingle() method.
+        $entityManager = self::getEntityManagerForResource($resourceName);
+        $objectName = self::getObjectNameForResource($resourceName);
+
+        $res = $entityManager->create($objectName, $data);
+
+        return $res;
     }
 
     /**
@@ -73,9 +103,14 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function putSingle($resourceName, $id, array $data)
+    public static function putSingle($resourceName, $id, array $data)
     {
-        // TODO: Implement putSingle() method.
+        $entityManager = self::getEntityManagerForResource($resourceName);
+        $objectName = self::getObjectNameForResource($resourceName);
+
+        $res = $entityManager->update($objectName, $id, $data);
+
+        return $res;
     }
 
     /**
@@ -83,8 +118,13 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $id
      * @return mixed
      */
-    public function deleteSingle($resourceName, $id)
+    public static function deleteSingle($resourceName, $id)
     {
-        // TODO: Implement deleteSingle() method.
+        $entityManager = self::getEntityManagerForResource($resourceName);
+        $objectName = self::getObjectNameForResource($resourceName);
+
+        $res = $entityManager->delete($objectName, $id);
+
+        return $res;
     }
 }
