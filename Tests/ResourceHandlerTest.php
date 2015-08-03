@@ -3,16 +3,18 @@
 
 namespace Managlea\Component\Tests;
 
+use Managlea\Component\EntityManagerFactory;
 use Managlea\Component\ResourceHandler;
+use Managlea\Component\ResourceMapper;
 
 class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException \Exception
+     * @eexpectedException \Exception
      */
     public function getSingle()
     {
-        ResourceHandler::getSingle('product', 1);
+        ResourceHandler::initialize(new EntityManagerFactory(), ResourceMapper::getInstance());
     }
 }

@@ -13,7 +13,7 @@ interface ResourceHandlerInterface
      * @param int $id resource id
      * @return mixed
      */
-    public static function getSingle($resourceName, $id);
+    public function getSingle($resourceName, $id);
 
     /**
      * @param string $resourceName

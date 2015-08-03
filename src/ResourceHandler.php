@@ -6,23 +6,46 @@ namespace Managlea\Component;
 class ResourceHandler implements ResourceHandlerInterface
 {
     /**
+     * @var EntityManagerFactoryInterface
+     */
+    private $entityManagerFactory;
+    /**
+     * @var ResourceMapperInterface
+     */
+    private $resourceMapper;
+    /**
      * @var EntityManagerInterface
      */
-    private static $entityManager;
+    private $entityManager;
     /**
      * @var string
      */
-    private static $objectName;
+    private $objectName;
+
+    /**
+     * @param EntityManagerFactoryInterface $entityManagerFactory
+     * @param ResourceMapperInterface $resourceMapper
+     * @return ResourceHandler
+     */
+    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper)
+    {
+        $resourceHandler = new self();
+
+        $resourceHandler->entityManagerFactory = $entityManagerFactory;
+        $resourceHandler->resourceMapper = $resourceMapper;
+
+        return $resourceHandler;
+    }
 
     /**
      * @param $resourceName
      * @return EntityManagerInterface
      * @throws \Exception
      */
-    private static function getEntityManagerForResource($resourceName)
+    private function getEntityManagerForResource($resourceName)
     {
-        $entityManagerName = ResourceMapper::getEntityManager($resourceName);
-        $entityManager = EntityManagerFactory::create($entityManagerName);
+        $entityManagerName = $this->resourceMapper->getEntityManager($resourceName);
+        $entityManager = $this->entityManagerFactory->create($entityManagerName);
 
         if (!$entityManager instanceof EntityManagerInterface) {
             throw new \Exception('Entity manager not instance of EntityManagerInterface');
@@ -35,19 +58,19 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param string $resourceName
      * @return string
      */
-    private static function getObjectNameForResource($resourceName)
+    private function getObjectNameForResource($resourceName)
     {
-        return ResourceMapper::getObjectName($resourceName);
+        return $this->resourceMapper->getObjectName($resourceName);
     }
 
     /**
      * @param string $resourceName
      * @throws \Exception
      */
-    private static function initialize($resourceName)
+    private function setup($resourceName)
     {
-        self::$entityManager = self::getEntityManagerForResource($resourceName);
-        self::$objectName = self::getObjectNameForResource($resourceName);
+        $this->entityManager = $this->getEntityManagerForResource($resourceName);
+        $this->objectName = $this->getObjectNameForResource($resourceName);
     }
 
     /**
@@ -56,11 +79,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @return mixed
      * @throws \Exception
      */
-    public static function getSingle($resourceName, $id)
+    public function getSingle($resourceName, $id)
     {
-        self::initialize($resourceName);
+        $this->setup($resourceName);
 
-        $resource = self::$entityManager->get(self::$objectName, $id);
+        $resource = $this->entityManager->get($this->objectName, $id);
 
         return $resource;
     }
