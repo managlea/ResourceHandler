@@ -12,7 +12,8 @@
     "psr-4": {"Managlea\\Component\\": "src/"}
   },
   "require": {
-    "managlea/entity-manager": "dev-master"
+    "managlea/entity-manager": "dev-master",
+    "managlea/resource-mapper": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true

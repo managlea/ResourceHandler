@@ -11,24 +11,36 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     private static function getEntityManagerForResource($resourceName)
     {
-        return EntityManagerFactory::createForResource($resourceName);
+        $entityManagerName = ResourceMapper::getEntityManager($resourceName);
+        return EntityManagerFactory::create($entityManagerName);
     }
 
     /**
-     * @param string $name
+     * @param string $resourceName
+     * @return string
+     */
+    private static function getObjectNameForResource($resourceName)
+    {
+        return ResourceMapper::getObjectName($resourceName);
+    }
+
+    /**
+     * @param string $resourceName
      * @param int $id
      * @return mixed
      * @throws \Exception
      */
-    public static function getSingle($name, $id)
+    public static function getSingle($resourceName, $id)
     {
-        $entityManager = self::getEntityManagerForResource($name);
+        $entityManager = self::getEntityManagerForResource($resourceName);
 
         if (!$entityManager instanceof EntityManagerInterface) {
             throw new \Exception('Entity manager not instance of EntityManagerInterface');
         }
 
-        $resource = $entityManager->get($name, $id);
+        $objectName = self::getObjectNameForResource($resourceName);
+
+        $resource = $entityManager->get($objectName, $id);
 
         return $resource;
     }
