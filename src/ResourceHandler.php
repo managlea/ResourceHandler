@@ -74,10 +74,9 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public static function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
-        $objectName = self::getObjectNameForResource($resourceName);
+        self::initialize($resourceName);
 
-        $collection = $entityManager->getCollection($objectName, $filters, $limit, $offset);
+        $collection = self::$entityManager->getCollection(self::$objectName, $filters, $limit, $offset);
 
         return $collection;
     }
@@ -89,10 +88,9 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public static function postSingle($resourceName, array $data)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
-        $objectName = self::getObjectNameForResource($resourceName);
+        self::initialize($resourceName);
 
-        $res = $entityManager->create($objectName, $data);
+        $res = self::$entityManager->create(self::$objectName, $data);
 
         return $res;
     }
@@ -105,10 +103,9 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public static function putSingle($resourceName, $id, array $data)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
-        $objectName = self::getObjectNameForResource($resourceName);
+        self::initialize($resourceName);
 
-        $res = $entityManager->update($objectName, $id, $data);
+        $res = self::$entityManager->update(self::$objectName, $id, $data);
 
         return $res;
     }
@@ -120,10 +117,9 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public static function deleteSingle($resourceName, $id)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
-        $objectName = self::getObjectNameForResource($resourceName);
+        self::initialize($resourceName);
 
-        $res = $entityManager->delete($objectName, $id);
+        $res = self::$entityManager->delete(self::$objectName, $id);
 
         return $res;
     }
