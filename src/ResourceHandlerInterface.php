@@ -9,6 +9,13 @@ namespace Managlea\Component;
 interface ResourceHandlerInterface
 {
     /**
+     * @param EntityManagerFactoryInterface $entityManagerFactory
+     * @param ResourceMapperInterface $resourceMapper
+     * @return ResourceHandlerInterface
+     */
+    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
+
+    /**
      * @param string $resourceName resource name
      * @param int $id resource id
      * @return mixed
@@ -22,14 +29,14 @@ interface ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public static function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
+    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
 
     /**
      * @param string $resourceName
      * @param array $data
      * @return mixed
      */
-    public static function postSingle($resourceName, array $data);
+    public function postSingle($resourceName, array $data);
 
     /**
      * @param string $resourceName
@@ -37,12 +44,12 @@ interface ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public static function putSingle($resourceName, $id, array $data);
+    public function putSingle($resourceName, $id, array $data);
 
     /**
      * @param string $resourceName
      * @param int $id
      * @return mixed
      */
-    public static function deleteSingle($resourceName, $id);
+    public function deleteSingle($resourceName, $id);
 }

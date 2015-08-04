@@ -18,14 +18,14 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     private $entityManager;
     /**
-     * @var string
+     * @var string mapped object name for resource
      */
     private $objectName;
 
     /**
      * @param EntityManagerFactoryInterface $entityManagerFactory
      * @param ResourceMapperInterface $resourceMapper
-     * @return ResourceHandler
+     * @return ResourceHandlerInterface
      */
     public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper)
     {
@@ -95,11 +95,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public static function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
+    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
     {
-        self::initialize($resourceName);
+        $this->setup($resourceName);
 
-        $collection = self::$entityManager->getCollection(self::$objectName, $filters, $limit, $offset);
+        $collection = $this->entityManager->getCollection($this->objectName, $filters, $limit, $offset);
 
         return $collection;
     }
@@ -109,11 +109,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public static function postSingle($resourceName, array $data)
+    public function postSingle($resourceName, array $data)
     {
-        self::initialize($resourceName);
+        $this->setup($resourceName);
 
-        $res = self::$entityManager->create(self::$objectName, $data);
+        $res = $this->entityManager->create($this->objectName, $data);
 
         return $res;
     }
@@ -124,11 +124,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public static function putSingle($resourceName, $id, array $data)
+    public function putSingle($resourceName, $id, array $data)
     {
-        self::initialize($resourceName);
+        $this->setup($resourceName);
 
-        $res = self::$entityManager->update(self::$objectName, $id, $data);
+        $res = $this->entityManager->update($this->objectName, $id, $data);
 
         return $res;
     }
@@ -138,11 +138,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $id
      * @return mixed
      */
-    public static function deleteSingle($resourceName, $id)
+    public function deleteSingle($resourceName, $id)
     {
-        self::initialize($resourceName);
+        $this->setup($resourceName);
 
-        $res = self::$entityManager->delete(self::$objectName, $id);
+        $res = $this->entityManager->delete($this->objectName, $id);
 
         return $res;
     }
