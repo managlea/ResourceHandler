@@ -44,7 +44,7 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     private function getEntityManagerForResource($resourceName)
     {
-        $entityManagerName = $this->resourceMapper->getEntityManager($resourceName);
+        $entityManagerName = $this->resourceMapper->getEntityManagerName($resourceName);
         $entityManager = $this->entityManagerFactory->create($entityManagerName);
 
         if (!$entityManager instanceof EntityManagerInterface) {
