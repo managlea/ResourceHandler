@@ -34,4 +34,28 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
         $resourceHandler = ResourceHandler::initialize($entityManagerFactory, ResourceMapper::getInstance());
         $resourceHandler->getSingle('product', 1);
     }
+
+    /**
+     * @test
+     */
+    public function getSingle()
+    {
+        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager->method('get')
+            ->willReturn('bar');
+
+        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManagerFactory->method('create')
+            ->willReturn($entityManager);
+
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, ResourceMapper::getInstance());
+        $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
+
+        $single = $resourceHandler->getSingle('product', 1);
+        $this->assertEquals('bar', $single);
+    }
 }
