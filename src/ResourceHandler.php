@@ -6,22 +6,71 @@ namespace Managlea\Component;
 class ResourceHandler implements ResourceHandlerInterface
 {
     /**
-     * @param string $resourceName
-     * @return EntityManagerInterface
+     * @var EntityManagerFactoryInterface
      */
-    private static function getEntityManagerForResource($resourceName)
+    private $entityManagerFactory;
+    /**
+     * @var ResourceMapperInterface
+     */
+    private $resourceMapper;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var string mapped object name for resource
+     */
+    private $objectName;
+
+    /**
+     * @param EntityManagerFactoryInterface $entityManagerFactory
+     * @param ResourceMapperInterface $resourceMapper
+     * @return ResourceHandlerInterface
+     */
+    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper)
     {
-        $entityManagerName = ResourceMapper::getEntityManager($resourceName);
-        return EntityManagerFactory::create($entityManagerName);
+        $resourceHandler = new self();
+
+        $resourceHandler->entityManagerFactory = $entityManagerFactory;
+        $resourceHandler->resourceMapper = $resourceMapper;
+
+        return $resourceHandler;
+    }
+
+    /**
+     * @param $resourceName
+     * @return EntityManagerInterface
+     * @throws \Exception
+     */
+    private function getEntityManagerForResource($resourceName)
+    {
+        $entityManagerName = $this->resourceMapper->getEntityManagerName($resourceName);
+        $entityManager = $this->entityManagerFactory->create($entityManagerName);
+
+        if (!$entityManager instanceof EntityManagerInterface) {
+            throw new \Exception('Entity manager not instance of EntityManagerInterface');
+        }
+
+        return $entityManager;
     }
 
     /**
      * @param string $resourceName
      * @return string
      */
-    private static function getObjectNameForResource($resourceName)
+    private function getObjectNameForResource($resourceName)
     {
-        return ResourceMapper::getObjectName($resourceName);
+        return $this->resourceMapper->getObjectName($resourceName);
+    }
+
+    /**
+     * @param string $resourceName
+     * @throws \Exception
+     */
+    private function setup($resourceName)
+    {
+        $this->entityManager = $this->getEntityManagerForResource($resourceName);
+        $this->objectName = $this->getObjectNameForResource($resourceName);
     }
 
     /**
@@ -30,17 +79,11 @@ class ResourceHandler implements ResourceHandlerInterface
      * @return mixed
      * @throws \Exception
      */
-    public static function getSingle($resourceName, $id)
+    public function getSingle($resourceName, $id)
     {
-        $entityManager = self::getEntityManagerForResource($resourceName);
+        $this->setup($resourceName);
 
-        if (!$entityManager instanceof EntityManagerInterface) {
-            throw new \Exception('Entity manager not instance of EntityManagerInterface');
-        }
-
-        $objectName = self::getObjectNameForResource($resourceName);
-
-        $resource = $entityManager->get($objectName, $id);
+        $resource = $this->entityManager->get($this->objectName, $id);
 
         return $resource;
     }
@@ -54,7 +97,11 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
     {
-        // TODO: Implement getCollection() method.
+        $this->setup($resourceName);
+
+        $collection = $this->entityManager->getCollection($this->objectName, $filters, $limit, $offset);
+
+        return $collection;
     }
 
     /**
@@ -64,7 +111,11 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public function postSingle($resourceName, array $data)
     {
-        // TODO: Implement postSingle() method.
+        $this->setup($resourceName);
+
+        $res = $this->entityManager->create($this->objectName, $data);
+
+        return $res;
     }
 
     /**
@@ -75,7 +126,11 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public function putSingle($resourceName, $id, array $data)
     {
-        // TODO: Implement putSingle() method.
+        $this->setup($resourceName);
+
+        $res = $this->entityManager->update($this->objectName, $id, $data);
+
+        return $res;
     }
 
     /**
@@ -85,6 +140,10 @@ class ResourceHandler implements ResourceHandlerInterface
      */
     public function deleteSingle($resourceName, $id)
     {
-        // TODO: Implement deleteSingle() method.
+        $this->setup($resourceName);
+
+        $res = $this->entityManager->delete($this->objectName, $id);
+
+        return $res;
     }
 }

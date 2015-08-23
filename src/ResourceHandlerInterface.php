@@ -9,11 +9,18 @@ namespace Managlea\Component;
 interface ResourceHandlerInterface
 {
     /**
+     * @param EntityManagerFactoryInterface $entityManagerFactory
+     * @param ResourceMapperInterface $resourceMapper
+     * @return ResourceHandlerInterface
+     */
+    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
+
+    /**
      * @param string $resourceName resource name
      * @param int $id resource id
      * @return mixed
      */
-    public static function getSingle($resourceName, $id);
+    public function getSingle($resourceName, $id);
 
     /**
      * @param string $resourceName
