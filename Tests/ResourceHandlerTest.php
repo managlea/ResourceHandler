@@ -15,7 +15,8 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function initialize()
     {
-        $resourceHandler = ResourceHandler::initialize(new EntityManagerFactory(), ResourceMapper::getInstance());
+        $resourceMapper = new ResourceMapper;
+        $resourceHandler = ResourceHandler::initialize(new EntityManagerFactory(), $resourceMapper);
         $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
     }
 
@@ -31,7 +32,8 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
         $entityManagerFactory->method('create')
             ->willReturn('foo');
 
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, ResourceMapper::getInstance());
+        $resourceMapper = new ResourceMapper;
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
         $resourceHandler->getSingle('product', 1);
     }
 
@@ -52,10 +54,36 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
         $entityManagerFactory->method('create')
             ->willReturn($entityManager);
 
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, ResourceMapper::getInstance());
+        $resourceMapper = new ResourceMapper;
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
         $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
 
         $single = $resourceHandler->getSingle('product', 1);
         $this->assertEquals('bar', $single);
+    }
+
+    /**
+     * @test
+     */
+    public function getCollection()
+    {
+        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManager->method('getCollection')
+            ->willReturn(array('foo', 'bar'));
+
+        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManagerFactory->method('create')
+            ->willReturn($entityManager);
+
+        $resourceMapper = new ResourceMapper;
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
+
+        $collection = $resourceHandler->getCollection('product');
+        $this->assertTrue(count($collection) == 2 && is_array($collection));
     }
 }
