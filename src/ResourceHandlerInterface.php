@@ -18,9 +18,10 @@ interface ResourceHandlerInterface
     /**
      * @param string $resourceName resource name
      * @param int $id resource id
+     * @param array|null $filters
      * @return mixed
      */
-    public function getSingle($resourceName, $id);
+    public function getSingle($resourceName, $id, array $filters = null);
 
     /**
      * @param string $resourceName

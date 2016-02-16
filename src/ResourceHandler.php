@@ -76,14 +76,15 @@ class ResourceHandler implements ResourceHandlerInterface
     /**
      * @param string $resourceName
      * @param int $id
+     * @param array|null $filters
      * @return mixed
      * @throws \Exception
      */
-    public function getSingle($resourceName, $id)
+    public function getSingle($resourceName, $id, array $filters = null)
     {
         $this->setup($resourceName);
 
-        $resource = $this->entityManager->get($this->objectName, $id);
+        $resource = $this->entityManager->get($this->objectName, $id, $filters);
 
         return $resource;
     }
