@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Managlea\Component;
 
 
@@ -38,11 +40,11 @@ class ResourceHandler implements ResourceHandlerInterface
     }
 
     /**
-     * @param $resourceName
+     * @param string $resourceName
      * @return EntityManagerInterface
      * @throws \Exception
      */
-    private function getEntityManagerForResource($resourceName)
+    private function getEntityManagerForResource(string $resourceName) : EntityManagerInterface
     {
         $entityManagerName = $this->resourceMapper->getEntityManagerName($resourceName);
         $entityManager = $this->entityManagerFactory->create($entityManagerName);
@@ -58,7 +60,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param string $resourceName
      * @return string
      */
-    private function getObjectNameForResource($resourceName)
+    private function getObjectNameForResource(string $resourceName) : string
     {
         return $this->resourceMapper->getObjectName($resourceName);
     }
@@ -67,7 +69,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param string $resourceName
      * @throws \Exception
      */
-    private function setup($resourceName)
+    private function setup(string $resourceName)
     {
         $this->entityManager = $this->getEntityManagerForResource($resourceName);
         $this->objectName = $this->getObjectNameForResource($resourceName);
@@ -80,7 +82,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getSingle($resourceName, $id, array $filters = array())
+    public function getSingle(string $resourceName, int $id, array $filters = array())
     {
         $this->setup($resourceName);
 
@@ -96,7 +98,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0)
+    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0)
     {
         $this->setup($resourceName);
 
@@ -110,7 +112,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function postSingle($resourceName, array $data)
+    public function postSingle(string $resourceName, array $data)
     {
         $this->setup($resourceName);
 
@@ -125,7 +127,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function putSingle($resourceName, $id, array $data)
+    public function putSingle(string $resourceName, int $id, array $data)
     {
         $this->setup($resourceName);
 
@@ -139,7 +141,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param int $id
      * @return mixed
      */
-    public function deleteSingle($resourceName, $id)
+    public function deleteSingle(string $resourceName, int $id)
     {
         $this->setup($resourceName);
 
