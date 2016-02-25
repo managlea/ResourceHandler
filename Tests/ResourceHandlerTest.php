@@ -123,7 +123,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function putSingle()
     {
-        $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01');
+        $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-02');
 
         $product = new Product();
         $product->setName($data['name']);
