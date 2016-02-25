@@ -13,6 +13,11 @@
       "Managlea\\Component\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Managlea\\Tests\\": "Tests/"
+    }
+  },
   "require": {
     "php": ">=7.0",
     "managlea/entity-manager": ">=0.0.1",

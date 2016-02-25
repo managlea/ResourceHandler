@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Managlea\Component;
 
 /**
@@ -21,7 +23,7 @@ interface ResourceHandlerInterface
      * @param array|null $filters
      * @return mixed
      */
-    public function getSingle($resourceName, $id, array $filters = null);
+    public function getSingle(string $resourceName, int $id, array $filters = array());
 
     /**
      * @param string $resourceName
@@ -30,14 +32,14 @@ interface ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public function getCollection($resourceName, array $filters = array(), $limit = 20, $offset = 0);
+    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0);
 
     /**
      * @param string $resourceName
      * @param array $data
      * @return mixed
      */
-    public function postSingle($resourceName, array $data);
+    public function postSingle(string $resourceName, array $data);
 
     /**
      * @param string $resourceName
@@ -45,12 +47,12 @@ interface ResourceHandlerInterface
      * @param array $data
      * @return mixed
      */
-    public function putSingle($resourceName, $id, array $data);
+    public function putSingle(string $resourceName, int $id, array $data);
 
     /**
      * @param string $resourceName
      * @param int $id
      * @return mixed
      */
-    public function deleteSingle($resourceName, $id);
+    public function deleteSingle(string $resourceName, int $id);
 }
