@@ -80,7 +80,7 @@ class ResourceHandler implements ResourceHandlerInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getSingle($resourceName, $id, array $filters = null)
+    public function getSingle($resourceName, $id, array $filters = array())
     {
         $this->setup($resourceName);
 
