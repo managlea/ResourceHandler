@@ -15,7 +15,7 @@
   },
   "require": {
     "php": ">=7.0",
-    "managlea/entity-manager": "dev-master",
+    "managlea/entity-manager": "0.0.1",
     "managlea/resource-mapper": "dev-master"
   },
   "require-dev": {
