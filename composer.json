@@ -1,6 +1,6 @@
 {
   "name": "managlea/resource-handler",
-  "description": "",
+  "description": "Handlling resources from different sources",
   "type": "library",
   "license": "MIT",
   "authors": [
