@@ -9,9 +9,6 @@ use Managlea\Component\ResourceHandlerInterface;
 use Managlea\Component\ResourceMapper;
 use Managlea\Tests\Model\Product;
 
-/**
- * Remove duplicate code
- */
 class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
