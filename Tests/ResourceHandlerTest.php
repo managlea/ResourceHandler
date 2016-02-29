@@ -93,29 +93,10 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function postSingle()
     {
-        $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01');
+        $resourceHandler = $this->provideResourceHandler('create');
 
-        $product = new Product();
-        $product->setName($data['name']);
-        $product->setDateOfBirth($data['dateOfBirth']);
-
-        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManager->method('create')
-            ->willReturn($product);
-
-        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManagerFactory->method('create')
-            ->willReturn($entityManager);
-        $resourceMapper = new ResourceMapper;
-
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
-
-        $resource = $resourceHandler->postSingle('product', $data);
-        $this->assertEquals($data['name'], $resource->getName());
+        $resource = $resourceHandler->postSingle('product', $this->data);
+        $this->assertEquals($this->data['name'], $resource->getName());
     }
 
     /**
@@ -123,29 +104,9 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function putSingle()
     {
-        $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01');
-
-        $product = new Product();
-        $product->setName($data['name']);
-        $product->setDateOfBirth($data['dateOfBirth']);
-
-        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManager->method('update')
-            ->willReturn($product);
-
-        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManagerFactory->method('create')
-            ->willReturn($entityManager);
-        $resourceMapper = new ResourceMapper;
-
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
-
-        $resource = $resourceHandler->putSingle('product', 1, $data);
-        $this->assertEquals($data['name'], $resource->getName());
+        $resourceHandler = $this->provideResourceHandler('update');
+        $resource = $resourceHandler->putSingle('product', 1, $this->data);
+        $this->assertEquals($this->data['name'], $resource->getName());
     }
 
     /**
@@ -170,5 +131,34 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
 
         $resource = $resourceHandler->deleteSingle('product', 1);
         $this->assertEquals(true, $resource);
+    }
+
+    private $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01');
+
+    private function provideResourceHandler($action)
+    {
+        $data = $this->data;
+
+        $product = new Product();
+        $product->setName($data['name']);
+        $product->setDateOfBirth($data['dateOfBirth']);
+
+        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $entityManager->method($action)
+            ->willReturn($product);
+
+        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManagerFactory->method('create')
+            ->willReturn($entityManager);
+        $resourceMapper = new ResourceMapper;
+
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+
+        return $resourceHandler;
     }
 }
