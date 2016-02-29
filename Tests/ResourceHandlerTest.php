@@ -94,7 +94,6 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
     public function postSingle()
     {
         $resourceHandler = $this->provideResourceHandler('create');
-
         $resource = $resourceHandler->postSingle('product', $this->data);
         $this->assertEquals($this->data['name'], $resource->getName());
     }
