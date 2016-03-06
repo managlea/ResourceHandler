@@ -24,7 +24,8 @@
     "managlea/resource-mapper": ">=0.0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": ">=5.2"
+    "phpunit/phpunit": ">=5.2",
+    "codeclimate/php-test-reporter": "dev-master as 0.0.1"
   },
   "prefer-stable": true,
   "minimum-stability": "dev"
