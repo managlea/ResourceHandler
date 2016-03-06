@@ -3,4 +3,8 @@ php:
   - '7.0'
 before_script:
   - composer self-update
-  - composer instal
+  - composer install
+script:
+  - phpunit --coverage-clover build/logs/clover.xml
+after_script:
+  - vendor/bin/test-reporter
