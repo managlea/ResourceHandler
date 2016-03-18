@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Managlea\Tests;
 
 use Managlea\Component\EntityManagerFactory;
