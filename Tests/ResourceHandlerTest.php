@@ -43,20 +43,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function getSingle()
     {
-        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManager->method('get')
-            ->willReturn('bar');
-
-        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManagerFactory->method('create')
-            ->willReturn($entityManager);
-
-        $resourceMapper = new ResourceMapper;
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $resourceHandler = $this->getResourceHandler('get', 'bar');
         $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
 
         $single = $resourceHandler->getSingle('product', 1);
@@ -68,20 +55,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function getCollection()
     {
-        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManager->method('getCollection')
-            ->willReturn(array('foo', 'bar'));
-
-        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManagerFactory->method('create')
-            ->willReturn($entityManager);
-
-        $resourceMapper = new ResourceMapper;
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $resourceHandler = $this->getResourceHandler('getCollection', array('foo', 'bar'));
         $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
 
         $collection = $resourceHandler->getCollection('product');
@@ -90,22 +64,24 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @dataProvider dataProvider
      */
-    public function postSingle()
+    public function postSingle($data)
     {
         $resourceHandler = $this->provideResourceHandler('create');
-        $resource = $resourceHandler->postSingle('product', $this->data);
-        $this->assertEquals($this->data['name'], $resource->getName());
+        $resource = $resourceHandler->postSingle('product', $data);
+        $this->assertEquals($data['name'], $resource->getName());
     }
 
     /**
      * @test
+     * @dataProvider dataProvider
      */
-    public function putSingle()
+    public function putSingle($data)
     {
         $resourceHandler = $this->provideResourceHandler('update');
-        $resource = $resourceHandler->putSingle('product', 1, $this->data);
-        $this->assertEquals($this->data['name'], $resource->getName());
+        $resource = $resourceHandler->putSingle('product', 1, $data);
+        $this->assertEquals($data['name'], $resource->getName());
     }
 
     /**
@@ -132,11 +108,9 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $resource);
     }
 
-    private $data = array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01');
-
     private function provideResourceHandler($action)
     {
-        $data = $this->data;
+        $data = current(current($this->dataProvider()));
 
         $product = new Product();
         $product->setName($data['name']);
@@ -159,5 +133,38 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
         $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
 
         return $resourceHandler;
+    }
+
+    /**
+     * @param $method
+     * @param $returnData
+     * @return ResourceHandlerInterface
+     */
+    public function getResourceHandler($method, $returnData)
+    {
+        $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $entityManager->method($method)
+            ->willReturn($returnData);
+
+        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entityManagerFactory->method('create')
+            ->willReturn($entityManager);
+
+        $resourceMapper = new ResourceMapper;
+        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+
+        return $resourceHandler;
+    }
+
+    public function dataProvider()
+    {
+        return array(
+            array(array('name' => 'Random Joe', 'dateOfBirth' => '1970-01-01'))
+        );
     }
 }
