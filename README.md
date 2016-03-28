@@ -6,7 +6,7 @@ Package to provide wrapper for handling resources (resource as in RESTful APIs e
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/39e46ddc-da95-4449-a104-616a1f55dde9/mini.png)](https://insight.sensiolabs.com/projects/39e46ddc-da95-4449-a104-616a1f55dde9)  
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/0d97db45677b41ae8e941ebf99d1f7e0)](https://www.codacy.com/app/Managlea/ResourceHandler)  
 [![Build Status](https://travis-ci.org/managlea/ResourceHandler.svg?branch=master)](https://travis-ci.org/managlea/ResourceHandler) [![Circle CI](https://circleci.com/gh/managlea/ResourceHandler/tree/master.svg?style=svg)](https://circleci.com/gh/managlea/ResourceHandler/tree/master)  
-[![PHP-Eye](http://php-eye.com/badge/managlea/resource-mapper/tested.svg)](http://php-eye.com/package/managlea/resource-mapper)
+[![PHP-Eye](http://php-eye.com/badge/managlea/resource-handler/tested.svg)](http://php-eye.com/package/managlea/resource-handler)
 ## Basic usage
 Read more about packages which are required by ResourceHandler
 * [Managlea/ResourceMapper](https://github.com/managlea/ResourceMapper) - for mapping resources to objects
