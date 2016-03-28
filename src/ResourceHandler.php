@@ -96,9 +96,9 @@ class ResourceHandler implements ResourceHandlerInterface
      * @param array $filters
      * @param int $limit
      * @param int $offset
-     * @return mixed
+     * @return array
      */
-    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0)
+    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0) : array
     {
         $this->setup($resourceName);
 
@@ -139,9 +139,9 @@ class ResourceHandler implements ResourceHandlerInterface
     /**
      * @param string $resourceName
      * @param int $id
-     * @return mixed
+     * @return bool
      */
-    public function deleteSingle(string $resourceName, int $id)
+    public function deleteSingle(string $resourceName, int $id) : bool
     {
         $this->setup($resourceName);
 

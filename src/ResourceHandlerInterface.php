@@ -32,7 +32,7 @@ interface ResourceHandlerInterface
      * @param int $offset
      * @return mixed
      */
-    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0);
+    public function getCollection(string $resourceName, array $filters = array(), int $limit = 20, int $offset = 0) : array;
 
     /**
      * @param string $resourceName
@@ -54,5 +54,5 @@ interface ResourceHandlerInterface
      * @param int $id
      * @return mixed
      */
-    public function deleteSingle(string $resourceName, int $id);
+    public function deleteSingle(string $resourceName, int $id) : bool;
 }
