@@ -16,26 +16,8 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function initialize()
     {
-        $resourceMapper = new ResourceMapper;
-        $resourceHandler = ResourceHandler::initialize(new EntityManagerFactory(), $resourceMapper);
+        $resourceHandler = $this->getResourceHandler();
         $this->assertTrue($resourceHandler instanceof ResourceHandlerInterface);
-    }
-
-    /**
-     * @test
-     * @expectedException \Exception
-     */
-    public function getSingleWrongEntityManager()
-    {
-        $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $entityManagerFactory->method('create')
-            ->willReturn('foo');
-
-        $resourceMapper = new ResourceMapper;
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
-        $resourceHandler->getSingle('product', 1);
     }
 
     /**
@@ -140,14 +122,16 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
      * @param $returnData
      * @return ResourceHandlerInterface
      */
-    public function getResourceHandler($method, $returnData)
+    public function getResourceHandler($method = null, $returnData = null)
     {
         $entityManager = $this->getMockBuilder('Managlea\Component\EntityManager\DoctrineEntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entityManager->method($method)
-            ->willReturn($returnData);
+        if (!is_null($method)) {
+            $entityManager->method($method)
+                ->willReturn($returnData);
+        }
 
         $entityManagerFactory = $this->getMockBuilder('Managlea\Component\EntityManagerFactory')
             ->disableOriginalConstructor()
