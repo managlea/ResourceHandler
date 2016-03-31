@@ -49,10 +49,6 @@ class ResourceHandler implements ResourceHandlerInterface
         $entityManagerName = $this->resourceMapper->getEntityManagerName($resourceName);
         $entityManager = $this->entityManagerFactory->create($entityManagerName);
 
-        if (!$entityManager instanceof EntityManagerInterface) {
-            throw new \Exception('Entity manager not instance of EntityManagerInterface');
-        }
-
         return $entityManager;
     }
 
