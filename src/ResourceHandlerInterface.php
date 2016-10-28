@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Managlea\Component;
 
@@ -13,9 +13,8 @@ interface ResourceHandlerInterface
     /**
      * @param EntityManagerFactoryInterface $entityManagerFactory
      * @param ResourceMapperInterface $resourceMapper
-     * @return ResourceHandlerInterface
      */
-    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
+    public function __construct(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
 
     /**
      * @param string $resourceName resource name
@@ -52,7 +51,7 @@ interface ResourceHandlerInterface
     /**
      * @param string $resourceName
      * @param int $id
-     * @return mixed
+     * @return bool
      */
     public function deleteSingle(string $resourceName, int $id) : bool;
 }

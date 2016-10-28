@@ -3,7 +3,6 @@
 
 namespace Managlea\Tests;
 
-use Managlea\Component\EntityManagerFactory;
 use Managlea\Component\ResourceHandler;
 use Managlea\Component\ResourceHandlerInterface;
 use Managlea\Component\ResourceMapper;
@@ -84,7 +83,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($entityManager);
         $resourceMapper = new ResourceMapper;
 
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $resourceHandler = new ResourceHandler($entityManagerFactory, $resourceMapper);
 
         $resource = $resourceHandler->deleteSingle('product', 1);
         $this->assertEquals(true, $resource);
@@ -112,7 +111,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($entityManager);
         $resourceMapper = new ResourceMapper;
 
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $resourceHandler = new ResourceHandler($entityManagerFactory, $resourceMapper);
 
         return $resourceHandler;
     }
@@ -140,7 +139,7 @@ class ResourceHandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($entityManager);
 
         $resourceMapper = new ResourceMapper;
-        $resourceHandler = ResourceHandler::initialize($entityManagerFactory, $resourceMapper);
+        $resourceHandler = new ResourceHandler($entityManagerFactory, $resourceMapper);
 
         return $resourceHandler;
     }
