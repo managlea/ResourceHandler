@@ -13,7 +13,6 @@ interface ResourceHandlerInterface
     /**
      * @param EntityManagerFactoryInterface $entityManagerFactory
      * @param ResourceMapperInterface $resourceMapper
-     * @return ResourceHandlerInterface
      */
     public function __construct(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
 
@@ -52,7 +51,7 @@ interface ResourceHandlerInterface
     /**
      * @param string $resourceName
      * @param int $id
-     * @return mixed
+     * @return bool
      */
     public function deleteSingle(string $resourceName, int $id) : bool;
 }
