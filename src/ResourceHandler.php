@@ -25,18 +25,14 @@ class ResourceHandler implements ResourceHandlerInterface
     private $objectName;
 
     /**
+     * ResourceHandler constructor.
      * @param EntityManagerFactoryInterface $entityManagerFactory
      * @param ResourceMapperInterface $resourceMapper
-     * @return ResourceHandlerInterface
      */
-    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper)
+    public function __construct(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper)
     {
-        $resourceHandler = new self();
-
-        $resourceHandler->entityManagerFactory = $entityManagerFactory;
-        $resourceHandler->resourceMapper = $resourceMapper;
-
-        return $resourceHandler;
+        $this->entityManagerFactory = $entityManagerFactory;
+        $this->resourceMapper = $resourceMapper;
     }
 
     /**

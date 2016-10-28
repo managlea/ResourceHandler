@@ -15,7 +15,7 @@ interface ResourceHandlerInterface
      * @param ResourceMapperInterface $resourceMapper
      * @return ResourceHandlerInterface
      */
-    public static function initialize(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
+    public function __construct(EntityManagerFactoryInterface $entityManagerFactory, ResourceMapperInterface $resourceMapper);
 
     /**
      * @param string $resourceName resource name
